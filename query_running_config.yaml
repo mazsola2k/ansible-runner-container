@@ -1,0 +1,15 @@
+---
+- name: Query Running Configuration
+  hosts: all
+  gather_facts: no  # Disable default fact gathering
+
+  tasks:
+    - name: Retrieve running configuration
+      cisco.ios.ios_config:
+        backup: yes
+      register: running_config_output
+
+    - name: Debug running configuration
+      debug:
+        var: running_config_output.backup_path
+  

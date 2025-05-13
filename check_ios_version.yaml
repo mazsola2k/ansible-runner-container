@@ -1,0 +1,24 @@
+---
+- name: Check Cisco IOS Version
+  hosts: all
+  gather_facts: no  # Disable default fact gathering
+
+  tasks:
+    - name: Debug before running ios_facts
+      debug:
+        msg: "Starting ios_facts gathering"
+
+    - name: Retrieve the image version
+      cisco.ios.ios_facts:
+        gather_subset:
+          - default
+      register: ios_facts_output
+
+    - name: Debug gathered facts
+      debug:
+        var: ios_facts_output
+
+    - name: Save image version to file
+      copy:
+        content: "{{ ios_facts_output.ansible_facts.ansible_net_image }}"
+        dest: "/workdir/output/image_versions.txt"
